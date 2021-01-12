@@ -10,7 +10,7 @@ info:
     email: john.doe@bnb-my-guest.com
   version: 1.0.0
 servers:
-- url: http://localhost:3300
+- url: http://localhost:3000
 tags:
 - name: Countries
   description: All the Country operations
@@ -73,7 +73,7 @@ paths:
           $ref: "#/components/responses/NotFoundError"
         500:
           $ref: "#/components/responses/UnexpectedServerError"
-
+ # City operations
   /cities:
       x-controller: cities
       get:
@@ -135,6 +135,7 @@ paths:
         500:
           $ref: "#/components/responses/UnexpectedServerError"
 
+  # Host operations
   /hosts:
       x-controller: hosts
       get:
@@ -363,7 +364,7 @@ paths:
         500:
           $ref: "#/components/responses/UnexpectedServerError"
          
-
+  # Guest operations
   /guests:
       x-controller: guests
       get:
@@ -438,24 +439,19 @@ paths:
               type: string
               example: France
             required: true
-          - name: phone
+          - name: language
             in: query
             schema:
               type: string
-              example: "+33623456780"
+              example: FR
             required: true
-          - name: fax
+          - name: currency
             in: query
             schema:
               type: string
-              example: Place Jeanne Dark
-            required: false
-          - name: email2
-            in: query
-            schema:
-              type: string
-              example: jeanne.dark76@mail.com
-            required: false
+              example: EUR
+            required: true
+          
         responses:
           200:
             description: Success response
@@ -516,21 +512,16 @@ paths:
             schema:
               type: string
               example: France
-          - name: phone
+          - name: language
             in: query
             schema:
               type: string
-              example: "+33623456780"
-          - name: fax
+              example: FR
+          - name: currency
             in: query
             schema:
               type: string
-              example: Place Jeanne Dark
-          - name: email2
-            in: query
-            schema:
-              type: string
-              example: jeanne.dark76@mail.com
+              example: EUR
         responses:
           200:
             description: Success response
@@ -585,6 +576,182 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Guest"
+        400:
+          $ref: "#/components/responses/BadRequestError"
+        404:
+          $ref: "#/components/responses/NotFoundError"
+        500:
+          $ref: "#/components/responses/UnexpectedServerError"
+
+  # Apartment operations
+  /apartments:
+    x-controller: apartments
+    get:
+      summary: Get all apartments
+      x-operation: getAll
+      tags:
+        - Apartments
+      parameters:
+        - name: cityId
+          in: query
+          schema: 
+              type: string
+              example : GRC_ATH
+          required: false
+        - name : hostId
+          in: query
+          schema: 
+              type: string
+              example : 4d04549d-1f80-4d2b-b33c-1e8b5896d6bd
+          required: false
+        - $ref: "#/components/parameters/QueryPage"
+        - $ref: "#/components/parameters/QueryPerPage"
+      responses:
+        200:
+          description: Success response
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: "#/components/schemas/PagedResponse"
+                properties:
+                  items:
+                    $ref: "#/components/schemas/Apartment"
+        400:
+          $ref: "#/components/responses/BadRequestError"
+        500:
+          $ref: "#/components/responses/UnexpectedServerError"
+    post:
+      summary: Add an apartment
+      x-operation: addNewApartment
+      tags:
+        - Apartments
+      parameters:
+        - name: hostId
+          in: query
+          schema:
+            type: string
+            example: 3fde97ed-563e-4850-ac07-95b57d51b736
+          required: true
+        - name: cityId
+          in: query
+          schema:
+            type: string
+            example: CZE_PRA
+          required: true
+        - name: bedrooms
+          in: query
+          schema:
+            type: integer
+            example: 4
+          required: true
+        - name: price
+          in: query
+          schema:
+            type: number
+            example: 266.45
+          required: true
+      responses:
+        200:
+          description: Success response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Guest"
+        400:
+          $ref: "#/components/responses/BadRequestError"
+        404:
+          $ref: "#/components/responses/NotFoundError"
+        500:
+          $ref: "#/components/responses/UnexpectedServerError"
+    put:
+      summary: Updates an apartment
+      x-operation: updateApartment
+      tags : 
+        - Apartments
+      parameters:
+        - name: apartmentId
+          in: query
+          schema:
+            type: string
+            example: ca632623-c524-4e30-8d15-e889aac75661
+          required: true  
+        - name: hostId
+          in: query
+          schema:
+            type: string
+            example: 3fde97ed-563e-4850-ac07-95b57d51b736
+        - name: cityId
+          in: query
+          schema:
+            type: string
+            example: CZE_PRA
+        - name: bedrooms
+          in: query
+          schema:
+            type: integer
+            example: 4
+        - name: price
+          in: query
+          schema:
+            type: number
+            example: 266.45
+      responses:
+        200:
+          description: Success response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Apartment"
+        400:
+          $ref: "#/components/responses/BadRequestError"
+        404:
+          $ref: "#/components/responses/NotFoundError"
+        500:
+          $ref: "#/components/responses/UnexpectedServerError"
+    delete:
+      summary: Delete an apartment
+      x-operation: deleteApartment
+      tags:
+        - Apartments
+      parameters:
+        - name: apartmentId
+          in: query
+          schema:
+            type: string
+            example: cdeaf592-ebfa-41dc-a02b-582afbfe7e40
+          required: true
+      responses:
+        200:
+          description: The resource was deleted successfully.
+        400:
+          $ref: "#/components/responses/BadRequestError"
+        500:
+          $ref: "#/components/responses/UnexpectedServerError" 
+
+
+  /apartments/{apartmentId}:
+    x-controller: apartments
+    get:
+      summary: Get an apartment by id
+      x-operation: getById
+      tags:
+        - Apartments
+      parameters:
+        - name: apartmentId
+          in: path
+          schema:
+            type: string
+            example: ca632623-c524-4e30-8d15-e889aac75661
+          required: true
+      responses:
+        200:
+          description: Success response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Apartment"
         400:
           $ref: "#/components/responses/BadRequestError"
         404:

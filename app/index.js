@@ -6,7 +6,7 @@ const yaml = require("yamljs");
 const path = require("path");
 
 // Server port
-const port = 3300 || process.env.SERVER_PORT;
+const port = 3000 || process.env.SERVER_PORT;
 
 // OpenAPI Spec path
 const apiSpecPath = path.join(__dirname, "spec", "api.yml");
