@@ -1,1 +1,30 @@
-[]
+[    
+
+{
+    "id": "ca632623-c524-4e30-8d15-e889aac75661",
+    "guestId": "6ecbbd2d-efc0-4943-8042-70f9bb24c07d",
+    "apartmentId": "ff5370fc-2031-439b-8b97-838e722b0ba7",
+    "checkIn": "2020-12-24",
+    "checkOut": "2020-12-28",
+    "status": "WAITING_FOR_PAYMENT"
+    
+},
+{
+    "id": "dba93093-14d5-4442-806f-3619f89e0d15",
+    "guestId": "71d34235-f3b2-4a44-866a-c2e5357488b3",
+    "apartmentId": "89cc812d-eb0c-4900-99f7-082991a1b05b",
+    "checkIn": "2021-01-01",
+    "checkOut": "202-01-17",
+    "status": "PAID"
+    
+},
+{
+    "id": "6bb165a8-7c1e-48a8-9b83-8adc73d0edde",
+    "guestId": "e2eb3599-0da4-47c3-a7db-a7b3e7c632ff",
+    "apartmentId": "e8c6ef7d-99f2-4031-93b1-ecfd1bff1fda",
+    "checkIn": "2019-03-24",
+    "checkOut": "2019-04-04",
+    "status": "CANCELLED"
+    
+}
+]

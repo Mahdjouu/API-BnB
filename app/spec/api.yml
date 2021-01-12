@@ -443,12 +443,21 @@ paths:
             in: query
             schema:
               type: string
+              enum:
+                - EN 
+                - FR
+                - DE 
+              default: EN
               example: FR
             required: true
           - name: currency
             in: query
             schema:
               type: string
+              enum:
+                - EUR
+                - USD 
+              default: EUR
               example: EUR
             required: true
           
@@ -516,11 +525,20 @@ paths:
             in: query
             schema:
               type: string
+              enum:
+                - EN 
+                - FR
+                - DE 
+              default: EN
               example: FR
           - name: currency
             in: query
             schema:
               type: string
+              enum:
+                - EUR
+                - USD 
+              default: EUR
               example: EUR
         responses:
           200:
@@ -658,7 +676,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Guest"
+                $ref: "#/components/schemas/Apartment"
         400:
           $ref: "#/components/responses/BadRequestError"
         404:
@@ -752,6 +770,188 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Apartment"
+        400:
+          $ref: "#/components/responses/BadRequestError"
+        404:
+          $ref: "#/components/responses/NotFoundError"
+        500:
+          $ref: "#/components/responses/UnexpectedServerError"
+
+  # Rental operations
+  /rentals:
+    x-controller: rentals
+    get:
+      summary: Get all rentals
+      x-operation: getAll
+      tags:
+        - Rentals
+      parameters:
+        - name: apartmentId
+          in: query
+          schema: 
+              type: string
+              example : ff5370fc-2031-439b-8b97-838e722b0ba7
+          required: false
+        - name : guestId
+          in: query
+          schema: 
+              type: string
+              example : 6ecbbd2d-efc0-4943-8042-70f9bb24c07d
+          required: false
+        - $ref: "#/components/parameters/QueryPage"
+        - $ref: "#/components/parameters/QueryPerPage"
+      responses:
+        200:
+          description: Success response
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: "#/components/schemas/PagedResponse"
+                properties:
+                  items:
+                    $ref: "#/components/schemas/Rental"
+        400:
+          $ref: "#/components/responses/BadRequestError"
+        500:
+          $ref: "#/components/responses/UnexpectedServerError"
+    post:
+      summary: Add a rental
+      x-operation: addNewRental
+      tags:
+        - Rentals
+      parameters:
+        - name: id
+          in: query
+          schema:
+            type: string
+            example: 6bb165a8-7c1e-48a8-9b83-8adc73d0edde
+          required: true
+        - name: guestId
+          in: query
+          schema:
+            type: string
+            example: e2eb3599-0da4-47c3-a7db-a7b3e7c632ff
+          required: true
+        - name: apartmentId
+          in: query
+          schema:
+            type: string
+            example: e8c6ef7d-99f2-4031-93b1-ecfd1bff1fda
+          required: true
+        - name: checkIn
+          in: query
+          schema:
+            type: string
+            format: date
+            example: 2019-03-24
+          required: true
+        - name: checkOut
+          in: query
+          schema:
+            type: string
+            format: date
+            example: 2019-04-04
+          required: true
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum:
+              - WAITING_FOR_PAYMENT
+              - PAID
+              - CANCELLED 
+            default: WAITING_FOR_PAYMENT
+      responses:
+        200:
+          description: Success response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Rental"
+        400:
+          $ref: "#/components/responses/BadRequestError"
+        404:
+          $ref: "#/components/responses/NotFoundError"
+        500:
+          $ref: "#/components/responses/UnexpectedServerError"
+    put:
+      summary: Updates a rental status to paid
+      x-operation: updateRental
+      tags : 
+        - Rentals
+      parameters:
+        - name: id
+          in: query
+          schema:
+            type: string
+            example: 6bb165a8-7c1e-48a8-9b83-8adc73d0edde
+          required: true
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum:
+              - WAITING_FOR_PAYMENT
+              - PAID
+              - CANCELLED 
+            default: PAID
+      responses:
+        200:
+          description: Success response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Rental"
+        400:
+          $ref: "#/components/responses/BadRequestError"
+        404:
+          $ref: "#/components/responses/NotFoundError"
+        500:
+          $ref: "#/components/responses/UnexpectedServerError"
+    delete:
+      summary: Delete a rental (cancel)
+      x-operation: deleteRental
+      tags:
+        - Rentals
+      parameters:
+        - name: rentalId
+          in: query
+          schema:
+            type: string
+            example: cdeaf592-ebfa-41dc-a02b-582afbfe7e40
+          required: true
+      responses:
+        200:
+          description: The resource was deleted successfully.
+        400:
+          $ref: "#/components/responses/BadRequestError"
+        500:
+          $ref: "#/components/responses/UnexpectedServerError" 
+
+
+  /rentals/{rentalId}:
+    x-controller: rentals
+    get:
+      summary: Get a rental by id
+      x-operation: getById
+      tags:
+        - Rentals
+      parameters:
+        - name: rentalId
+          in: path
+          schema:
+            type: string
+            example: ca632623-c524-4e30-8d15-e889aac75661
+          required: true
+      responses:
+        200:
+          description: Success response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Rental"
         400:
           $ref: "#/components/responses/BadRequestError"
         404:
