@@ -971,6 +971,8 @@ components:
       properties:
         id:
           type: string
+          minLength: 3
+          maxLength: 3
           example: FRA
         country:
           type: string
@@ -984,12 +986,18 @@ components:
       properties:
         id: 
           type: string
+          minLength: 7
+          maxLength: 7
           example: FRA_TOU
         countryId : 
           type: string
+          minLength: 3
+          maxLength: 3
           example : FRA
         city:
           type: string
+          minLength: 2
+          maxLength: 50
           example: Toulouse
       required:
         - id 
@@ -1001,21 +1009,27 @@ components:
       properties:
         id: 
           type: string
+          minLength: 36
+          maxLength: 36
           example: "71d34235-f3b2-4a44-866a-c2e5357488b3"
         firstname:
           type: string
+          minLength: 2
           example : Jeanne
         lastname:
           type: string
+          minLength: 2
           example : Dark
         email :
           type : string
+          minLength: 5
           example: jeanne.dark@mail.com
         address:
           type: object
           properties:
             street:
                 type: string
+                minLength: 5
                 example : Place Jeanne Dark
             zipCode:
                 type: string
@@ -1025,9 +1039,11 @@ components:
                 example : "76000"
             city:
                 type: string
+                minLength: 2
                 example : Rouen
             country : 
                 type: string
+                minLength: 2
                 example : France
           required:
             - street
@@ -1059,10 +1075,11 @@ components:
                   type: string
                   minLength: 12
                   maxLength: 12
-                  pattern: '\+[0-9]{11}'
+                  pattern: \+[0-9]{11}
                   example : "+33623456780"
                 email:
                   type : string
+                  minLength: 5
                   example: jeanne.dark@mail.com
               required:
                 - phone
@@ -1077,6 +1094,8 @@ components:
               properties:
                 language : 
                   type: string
+                  minLength: 2
+                  maxLength: 2
                   enum:
                     - EN 
                     - FR
@@ -1084,6 +1103,8 @@ components:
                   default: EN
                 currency:
                   type: string
+                  minLength: 3
+                  maxLength: 3
                   enum:
                     - EUR
                     - USD 
@@ -1097,9 +1118,13 @@ components:
       properties:
         id: 
           type: string
+          minLength: 36
+          maxLength: 36
           example: dba93093-14d5-4442-806f-3619f89e0d15
         hostId:
           type: string
+          minLength: 36
+          maxLength: 36
           example: ee562813-6691-4182-bbcd-a634966af884
         cityId:
           type: string
@@ -1126,12 +1151,18 @@ components:
       properties:
         id: 
           type: string
+          minLength: 36
+          maxLength: 36
           example : ca632623-c524-4e30-8d15-e889aac75661
         guestId: 
           type: string
+          minLength: 36
+          maxLength: 36
           example : 6ecbbd2d-efc0-4943-8042-70f9bb24c07d
         apartmentId : 
           type: string
+          minLength: 36
+          maxLength: 36
           example : ff5370fc-2031-439b-8b97-838e722b0ba7
         checkIn:
           type : string
@@ -1143,6 +1174,7 @@ components:
           example : 2020-12-28
         status :
           type: string
+          minLength: 4
           enum:
             - WAITING_FOR_PAYMENT
             - PAID
